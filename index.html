@@ -3,526 +3,526 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>📽️ فاصل أفلام ومسلسلات وأنمي - التوب بالعالم</title>
+<title>مكتبة الأفلام والمسلسلات والأنمي - شرير ومطيع</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Tajawal&display=swap');
-  * {
-    box-sizing: border-box;
-  }
   body {
-    margin:0; padding:0;
-    background: #0a0a0a;
+    font-family: "Tahoma", sans-serif;
+    background: #111;
     color: #eee;
-    font-family: 'Tajawal', sans-serif;
+    margin: 0; padding: 0;
   }
   header {
-    background: #111;
-    padding: 20px 0;
-    text-align: center;
-    border-bottom: 3px solid #f00;
+    background: #222;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
   }
-  header h1 {
-    margin: 0;
-    font-size: 32px;
-    color: #f00;
-    user-select: none;
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 10px;
+    padding-bottom: 5px;
+  }
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+  .slide-item {
+    min-width: 180px;
+    background: #333;
+    padding: 15px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+  .slide-item:hover {
+    background: #ff6600;
   }
   nav {
-    background: #1b1b1b;
+    margin-top: 10px;
     display: flex;
-    justify-content: center;
-    gap: 25px;
-    padding: 12px 0;
+    gap: 8px;
     flex-wrap: wrap;
   }
   nav button {
-    background: transparent;
+    background: #333;
     border: none;
     color: #eee;
-    font-weight: bold;
-    font-size: 18px;
+    padding: 8px 14px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 8px 18px;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  nav button.active,
-  nav button:hover {
-    background-color: #f00;
-    color: #fff;
-  }
-  .container {
-    max-width: 1100px;
-    margin: 25px auto;
-    padding: 0 15px;
-  }
-  .search-bar {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-  }
-  .search-bar input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: none;
-    background: #222;
-    color: #eee;
-    font-size: 17px;
-    outline: none;
-  }
-  .search-bar button {
-    padding: 12px 20px;
-    background: #f00;
-    border: none;
-    color: #eee;
     font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 17px;
-    transition: background-color 0.3s;
+    transition: background 0.3s;
   }
-  .search-bar button:hover {
-    background-color: #c00;
+  nav button.active, nav button:hover {
+    background: #ff6600;
   }
-  .media-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-    gap: 22px;
+  #searchInput {
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+  }
+  main {
+    padding: 15px;
   }
   .media-card {
-    background: #222;
-    border-radius: 14px;
-    box-shadow: 0 0 15px #000;
+    background:#222;
+    margin:10px 0;
+    border-radius: 6px;
+    padding: 10px;
     cursor: pointer;
-    transition: transform 0.25s, box-shadow 0.25s;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    gap: 10px;
+    align-items: center;
   }
   .media-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px #f00;
+    background: #444;
   }
-  .media-thumb {
-    width: 100%;
-    height: 140px;
+  img.thumb {
+    width: 120px; height: 70px;
     object-fit: cover;
-    border-bottom: 3px solid #f00;
+    border-radius: 4px;
   }
-  .media-info {
-    padding: 15px 12px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .media-info h3 {
-    margin: 0 0 8px;
-    color: #f00;
-    font-size: 20px;
-    user-select: none;
-  }
-  .media-info p {
-    font-size: 14px;
-    line-height: 1.4;
-    color: #ccc;
-    flex-grow: 1;
-    overflow: hidden;
-  }
-  .media-info .category {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #f00;
-    font-weight: bold;
-    user-select: none;
-    text-transform: uppercase;
-  }
-  /* تفاصيل العنصر */
   .details-view {
-    background: #111;
-    padding: 25px;
-    border-radius: 15px;
-    max-width: 900px;
-    margin: 0 auto 50px auto;
-    box-shadow: 0 0 30px #f00;
+    background: #222;
+    border-radius: 6px;
+    padding: 15px;
   }
   .details-view h2 {
-    color: #f00;
     margin-top: 0;
-    user-select: none;
-  }
-  .details-view p {
-    color: #ccc;
-    font-size: 16px;
-    line-height: 1.5;
   }
   .details-iframe {
-    margin-top: 25px;
     width: 100%;
-    height: 420px;
-    border-radius: 14px;
+    height: 350px;
     border: none;
-    box-shadow: 0 0 15px #f00;
-  }
-  .details-links {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+    border-radius: 6px;
   }
   .details-links a {
-    background: #f00;
-    color: #eee;
-    padding: 13px 22px;
-    border-radius: 10px;
-    font-weight: bold;
+    margin-right: 10px;
+    color: #ff6600;
     text-decoration: none;
-    user-select: none;
-    transition: background-color 0.3s;
+    font-weight: bold;
   }
   .details-links a:hover {
-    background-color: #c00;
+    text-decoration: underline;
   }
   .back-btn {
+    cursor: pointer;
+    color: #ff6600;
+    font-weight: bold;
+    margin-bottom: 15px;
     display: inline-block;
-    margin-bottom: 20px;
-    color: #f00;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-    transition: color 0.3s;
   }
-  .back-btn:hover {
-    color: #c00;
-  }
-  /* نموذج الإضافة */
-  .add-form {
-    background: #111;
-    max-width: 700px;
-    margin: 0 auto 50px auto;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 0 30px #f00;
-  }
-  .add-form h2 {
-    color: #f00;
-    margin-top: 0;
-    user-select: none;
-  }
-  .add-form label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    user-select: none;
-  }
-  .add-form input[type="text"],
-  .add-form textarea,
-  .add-form select {
-    width: 100%;
-    padding: 12px 15px;
-    margin-top: 6px;
-    border-radius: 10px;
-    border: none;
+  form#addEditForm {
     background: #222;
-    color: #eee;
-    font-size: 16px;
-    resize: vertical;
-    outline: none;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
   }
-  .add-form textarea {
-    min-height: 100px;
+  form#addEditForm label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
   }
-  .add-form button {
-    margin-top: 25px;
-    padding: 14px 25px;
-    background: #f00;
+  form#addEditForm input[type="text"],
+  form#addEditForm textarea,
+  form#addEditForm select {
+    width: 100%;
+    padding: 7px;
+    margin-top: 5px;
+    border-radius: 4px;
     border: none;
+    font-size: 15px;
+    background: #333;
     color: #eee;
+    resize: vertical;
+  }
+  form#addEditForm textarea {
+    min-height: 80px;
+  }
+  form#addEditForm button {
+    margin-top: 15px;
+    background: #ff6600;
+    border: none;
+    color: #fff;
     font-weight: bold;
-    border-radius: 12px;
-    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.3s;
   }
-  .add-form button:hover {
-    background-color: #c00;
+  form#addEditForm button:hover {
+    background: #cc5200;
   }
-  .message {
-    margin-top: 20px;
+  .actions-btns {
+    margin-top: 15px;
+  }
+  .actions-btns button {
+    background: #cc3300;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
     font-weight: bold;
-    color: #f00;
-    user-select: none;
+    margin-right: 10px;
+    transition: background 0.3s;
   }
-  /* Responsive tweaks */
-  @media (max-width: 600px) {
-    nav {
-      gap: 10px;
-    }
-    nav button {
-      font-size: 16px;
-      padding: 7px 14px;
-    }
+  .actions-btns button:hover {
+    background: #990000;
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>📽️ فاصل أفلام ومسلسلات وأنمي</h1>
+  <div class="slider" id="titleSlider" aria-label="سلايدر عناوين العناصر"></div>
+  <nav id="categoryNav" aria-label="قائمة تصنيفات الأفلام والمسلسلات والأنمي"></nav>
+  <input type="search" id="searchInput" placeholder="ابحث هنا ..." aria-label="بحث" />
 </header>
 
-<nav>
-  <button data-cat="all" class="active">الكل</button>
-  <button data-cat="movie">أفلام</button>
-  <button data-cat="series">مسلسلات</button>
-  <button data-cat="anime">أنمي</button>
-  <button id="nav-add">أضف جديد (مالك الموقع فقط)</button>
-</nav>
-
-<main class="container" id="main-content">
-  <!-- هنا المحتوى ديناميكي -->
+<main id="mainContent" tabindex="0">
+  <!-- المحتوى الديناميكي -->
 </main>
 
 <script>
 (() => {
-  "use strict";
-
-  const OWNER_PASSWORD = "secret123"; // كلمة السر حق مالك الموقع، غيرها على راحتك
+  const OWNER_PASSWORD = 'secret123'; // كلمة السر للتمكين من الإضافة والتعديل والحذف
   let mediaItems = JSON.parse(localStorage.getItem('mediaItems')) || [];
 
-  // حالة الصفحة
+  // التصنيفات
+  const categories = [
+    { id: 'all', name: 'الكل' },
+    { id: 'movie', name: 'أفلام' },
+    { id: 'series', name: 'مسلسلات' },
+    { id: 'anime', name: 'أنمي' },
+    { id: 'action', name: 'أكشن' },
+    { id: 'crime', name: 'جريمة' },
+    { id: 'surreal', name: 'سيريالي' },
+    { id: 'drama', name: 'دراما' },
+    { id: 'comedy', name: 'كوميدي' },
+    { id: 'sci-fi', name: 'خيال علمي' },
+    { id: 'romance', name: 'رومانس' },
+    { id: 'documentary', name: 'وثائقي' }
+  ];
+
   let currentCategory = 'all';
-  let filteredItems = [...mediaItems];
-  let currentView = 'list'; // list, details, add
-  let currentDetailId = null;
+  let filteredItems = [];
+  let editingIndex = null; // لتعديل مقال محدد
 
-  // العناصر المهمة
-  const mainContent = document.getElementById('main-content');
-  const navButtons = document.querySelectorAll('nav button[data-cat]');
-  const navAddBtn = document.getElementById('nav-add');
+  const mainContent = document.getElementById('mainContent');
+  const categoryNav = document.getElementById('categoryNav');
+  const titleSlider = document.getElementById('titleSlider');
+  const searchInput = document.getElementById('searchInput');
 
-  // --- رندر القائمة الرئيسية ---
-  function renderList() {
-    mainContent.innerHTML = `
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="ابحث عن عنوان أو وصف..." autofocus />
-        <button id="searchBtn">بحث</button>
-      </div>
-      <div class="media-list"></div>
-    `;
-    renderMediaCards(filteredItems);
-    // ربط البحث
-    document.getElementById('searchBtn').onclick = doSearch;
-    document.getElementById('searchInput').onkeyup = (e) => {
-      if (e.key === "Enter") doSearch();
-    };
+  // إنشاء أزرار التصنيفات
+  function renderCategoryButtons() {
+    categoryNav.innerHTML = '';
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.textContent = cat.name;
+      btn.dataset.cat = cat.id;
+      if(cat.id === currentCategory) btn.classList.add('active');
+      btn.onclick = () => {
+        if(currentCategory === cat.id) return;
+        currentCategory = cat.id;
+        filteredItems = filterByCategory(currentCategory);
+        renderMediaCards(filteredItems);
+        updateCategoryActive();
+      };
+      categoryNav.appendChild(btn);
+    });
+  }
+  function updateCategoryActive(){
+    Array.from(categoryNav.children).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === currentCategory);
+    });
   }
 
-  // --- عرض بطاقات العناصر ---
-  function renderMediaCards(list) {
-    const container = mainContent.querySelector('.media-list');
-    container.innerHTML = '';
-    if (list.length === 0) {
-      container.innerHTML = '<p style="text-align:center; user-select:none;">ما فيه عناصر لعرضها.</p>';
+  // فلترة حسب التصنيف
+  function filterByCategory(cat) {
+    if(cat === 'all') return [...mediaItems];
+    return mediaItems.filter(item => item.category === cat);
+  }
+
+  // عمل السلايدر للعناوين
+  function renderTitleSlider(items) {
+    titleSlider.innerHTML = '';
+    if(!items.length) {
+      titleSlider.textContent = 'مافي عناصر للعرض.';
       return;
     }
-    list.forEach((item, idx) => {
-      const card = document.createElement('div');
-      card.className = 'media-card';
-      card.tabIndex = 0; // للتصفح بالكيبورد
-      card.setAttribute('role', 'button');
-      card.setAttribute('aria-pressed', 'false');
-      card.innerHTML = `
-        <img src="${item.thumbnail || 'https://via.placeholder.com/300x140?text=بدون+صورة'}" alt="صورة ${item.title}" class="media-thumb" />
-        <div class="media-info">
-          <h3>${item.title}</h3>
-          <p>${item.description.length > 100 ? item.description.slice(0,100) + "..." : item.description}</p>
-          <div class="category">${item.category}</div>
-        </div>
-      `;
-      card.onclick = () => {
-        currentView = 'details';
-        currentDetailId = idx;
-        renderDetails(idx);
-      };
-      card.onkeydown = (e) => {
-        if (e.key === "Enter" || e.key === " ") {
+    items.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'slide-item';
+      div.textContent = item.title;
+      div.title = item.title;
+      div.tabIndex = 0;
+      div.onclick = () => showDetails(idx);
+      div.onkeydown = (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          card.click();
+          showDetails(idx);
         }
       };
-      container.appendChild(card);
+      titleSlider.appendChild(div);
     });
   }
 
-  // --- عرض تفاصيل عنصر ---
-  function renderDetails(id) {
+  // عرض العناصر ككروت
+  function renderMediaCards(items) {
+    if(items.length === 0){
+      mainContent.innerHTML = `
+      <p>مافي عناصر تتناسب مع البحث أو الفلتر.</p>
+      <button id="btnAddNew" style="margin-top:15px;padding:10px 15px;background:#ff6600;border:none;border-radius:4px;cursor:pointer;color:#fff;font-weight:bold;">إضافة مقال جديد</button>
+      `;
+      document.getElementById('btnAddNew').onclick = () => showAddEditForm();
+      renderTitleSlider([]);
+      return;
+    }
+    mainContent.innerHTML = '';
+    const addBtn = document.createElement('button');
+    addBtn.textContent = 'إضافة مقال جديد';
+    addBtn.style = 'background:#ff6600;color:#fff;padding:10px 15px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;margin-bottom:15px;';
+    addBtn.onclick = () => showAddEditForm();
+    mainContent.appendChild(addBtn);
+
+    items.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'media-card';
+      card.tabIndex = 0;
+
+      card.onclick = () => showDetails(idx);
+      card.onkeydown = (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showDetails(idx);
+        }
+      };
+
+      const thumb = document.createElement('img');
+      thumb.src = item.thumbnail || 'https://via.placeholder.com/300x140?text=بدون+صورة';
+      thumb.alt = item.title;
+      thumb.className = 'thumb';
+
+      const info = document.createElement('div');
+      info.style.flex = '1';
+
+      const title = document.createElement('h3');
+      title.textContent = item.title;
+
+      const desc = document.createElement('p');
+      desc.textContent = item.description;
+
+      info.appendChild(title);
+      info.appendChild(desc);
+
+      card.appendChild(thumb);
+      card.appendChild(info);
+
+      mainContent.appendChild(card);
+    });
+
+    renderTitleSlider(items);
+  }
+
+  // عرض تفاصيل عنصر + أزرار تعديل وحذف
+  function showDetails(id) {
     const item = filteredItems[id];
     if(!item) {
-      mainContent.innerHTML = `<p style="text-align:center; user-select:none;">العنصر غير موجود.</p>`;
+      alert("هذا العنصر ما موجود.");
       return;
     }
     mainContent.innerHTML = `
-      <span class="back-btn" id="backBtn">← رجوع</span>
+      <span class="back-btn" tabindex="0" role="button" aria-label="العودة للقائمة">← رجوع</span>
       <div class="details-view">
         <h2>${item.title}</h2>
-        <p>${item.description}</p>
-        <iframe class="details-iframe" src="${item.embed}" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>
-        <div class="details-links">
-          ${item.download ? `<a href="${item.download}" target="_blank" rel="noopener noreferrer" download>تحميل</a>` : ''}
+        <p><strong>الوصف:</strong> ${item.description}</p>
+        <p><strong>القصة:</strong><br>${item.story ? item.story.replace(/\n/g, '<br>') : 'مافي قصة مضافة'}</p>
+        <p><strong>التصنيف:</strong> ${categories.find(c => c.id === item.category)?.name || item.category}</p>
+        <iframe class="details-iframe" src="${item.embedLink}" allowfullscreen allow="autoplay; fullscreen"></iframe>
+        <div class="details-links" style="margin-top:10px;">
+          ${item.downloadLinks.map((dl, i) => `<a href="${dl}" target="_blank" rel="noopener noreferrer">تحميل ${i+1}</a>`).join('')}
+        </div>
+        <div class="actions-btns">
+          <button id="editBtn">تعديل</button>
+          <button id="deleteBtn">حذف</button>
         </div>
       </div>
     `;
-    document.getElementById('backBtn').onclick = () => {
-      currentView = 'list';
-      renderList();
+    const backBtn = mainContent.querySelector('.back-btn');
+    backBtn.onclick = () => renderMediaCards(filteredItems);
+    backBtn.onkeydown = (e) => {
+      if(e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        backBtn.click();
+      }
+    };
+
+    document.getElementById('editBtn').onclick = () => showAddEditForm(id);
+    document.getElementById('deleteBtn').onclick = () => {
+      if(confirm(`هل تبي تحذف المقال "${item.title}"؟ ما يمديك ترجعه بعدين.`)){
+        mediaItems.splice(mediaItems.indexOf(item), 1);
+        saveAndRefresh();
+      }
     };
   }
 
-  // --- نموذج إضافة عنصر جديد ---
-  function renderAddForm() {
-    mainContent.innerHTML = `
-      <section class="add-form">
-        <h2>أضف عنصر جديد</h2>
-        <label for="titleInput">العنوان *</label>
-        <input type="text" id="titleInput" placeholder="عنوان العنصر" required />
-
-        <label for="descInput">الوصف *</label>
-        <textarea id="descInput" placeholder="وصف مختصر عن العنصر" required></textarea>
-
-        <label for="categorySelect">التصنيف *</label>
-        <select id="categorySelect" required>
-          <option value="" disabled selected>اختر التصنيف</option>
-          <option value="movie">فلم</option>
-          <option value="series">مسلسل</option>
-          <option value="anime">أنمي</option>
-        </select>
-
-        <label for="thumbInput">رابط الصورة المصغرة *</label>
-        <input type="text" id="thumbInput" placeholder="رابط الصورة" required />
-
-        <label for="embedInput">رابط العرض (iframe) *</label>
-        <input type="text" id="embedInput" placeholder="رابط العرض (مثل رابط اليوتيوب)" required />
-
-        <label for="downloadInput">رابط التحميل (اختياري)</label>
-        <input type="text" id="downloadInput" placeholder="رابط التحميل" />
-
-        <button id="addBtn">أضف العنصر</button>
-        <button id="cancelBtn" style="background:#555; margin-left: 10px;">إلغاء</button>
-        <div class="message" id="formMessage"></div>
-      </section>
-    `;
-    document.getElementById('addBtn').onclick = addNewItem;
-    document.getElementById('cancelBtn').onclick = () => {
-      currentView = 'list';
-      renderList();
-    };
-  }
-
-  // --- إضافة عنصر جديد ---
-  function addNewItem() {
-    const title = document.getElementById('titleInput').value.trim();
-    const desc = document.getElementById('descInput').value.trim();
-    const category = document.getElementById('categorySelect').value;
-    const thumb = document.getElementById('thumbInput').value.trim();
-    const embed = document.getElementById('embedInput').value.trim();
-    const download = document.getElementById('downloadInput').value.trim();
-
-    const msg = document.getElementById('formMessage');
-    msg.textContent = '';
-
-    if (!title || !desc || !category || !thumb || !embed) {
-      msg.textContent = 'عبي كل الحقول المطلوبة يا ذيب!';
-      return;
-    }
-    // تحقق من وجود روابط صحيحة (بسيط)
-    if (!isValidURL(thumb) || !isValidURL(embed) || (download && !isValidURL(download))) {
-      msg.textContent = 'تأكد من صحة الروابط!';
-      return;
-    }
-
-    const newItem = {
-      title, description: desc, category, thumbnail: thumb, embed, download
-    };
-
-    mediaItems.push(newItem);
+  // حفظ التغييرات لل localStorage وتحديث العرض
+  function saveAndRefresh(){
     localStorage.setItem('mediaItems', JSON.stringify(mediaItems));
-
-    alert('تمت إضافة العنصر يا ذيب 🔥');
-    // تحديث الحالة
-    currentView = 'list';
-    currentCategory = 'all';
-    filteredItems = [...mediaItems];
-    setActiveCategoryButton('all');
-    renderList();
-  }
-
-  // --- تحقق بسيط من رابط ---
-  function isValidURL(str) {
-    try {
-      new URL(str);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  // --- البحث ---
-  function doSearch() {
-    const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (!keyword) {
-      filteredItems = currentCategory === 'all' ? [...mediaItems] : mediaItems.filter(i => i.category === currentCategory);
-    } else {
-      filteredItems = (currentCategory === 'all' ? mediaItems : mediaItems.filter(i => i.category === currentCategory))
-        .filter(i => i.title.toLowerCase().includes(keyword) || i.description.toLowerCase().includes(keyword));
-    }
+    filteredItems = filterByCategory(currentCategory);
     renderMediaCards(filteredItems);
   }
 
-  // --- تعيين زر الفئة النشط ---
-  function setActiveCategoryButton(cat) {
-    navButtons.forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+  // نموذج الإضافة والتعديل
+  function showAddEditForm(editId = null) {
+    // طلب كلمة السر قبل التعديل أو الإضافة
+    let pass = prompt('ادخل كلمة السر للدخول على الإضافة/التعديل:');
+    if(pass !== OWNER_PASSWORD){
+      alert('كلمة السر خاطئة! ما تقدر تضيف أو تعدل.');
+      return;
+    }
+
+    editingIndex = (editId !== null) ? editId : null;
+    let item = editingIndex !== null ? filteredItems[editingIndex] : {
+      title: '',
+      description: '',
+      story: '',
+      thumbnail: '',
+      embedLink: '',
+      downloadLinks: [''],
+      category: 'movie'
+    };
+
+    mainContent.innerHTML = `
+      <span class="back-btn" tabindex="0" role="button" aria-label="العودة للقائمة">← رجوع</span>
+      <form id="addEditForm" aria-label="${editingIndex !== null ? 'نموذج تعديل المقال' : 'نموذج إضافة مقال جديد'}">
+        <label for="titleInput">العنوان:</label>
+        <input type="text" id="titleInput" name="title" required value="${escapeHtml(item.title)}" />
+
+        <label for="descInput">الوصف القصير:</label>
+        <textarea id="descInput" name="description" required>${escapeHtml(item.description)}</textarea>
+
+        <label for="storyInput">القصة (ممكن تضيف تفاصيل أكثر هنا):</label>
+        <textarea id="storyInput" name="story">${escapeHtml(item.story)}</textarea>
+
+        <label for="thumbnailInput">رابط صورة الغلاف:</label>
+        <input type="text" id="thumbnailInput" name="thumbnail" value="${escapeHtml(item.thumbnail)}" />
+
+        <label for="embedInput">رابط الفيديو (iframe src):</label>
+        <input type="text" id="embedInput" name="embedLink" value="${escapeHtml(item.embedLink)}" />
+
+        <label for="downloadsInput">روابط التحميل (افصل بينها بفواصل):</label>
+        <input type="text" id="downloadsInput" name="downloadLinks" value="${item.downloadLinks.join(',')}" />
+
+        <label for="categorySelect">التصنيف:</label>
+        <select id="categorySelect" name="category" required>
+          ${categories.filter(c => c.id !== 'all').map(c =>
+            `<option value="${c.id}" ${item.category === c.id ? 'selected' : ''}>${c.name}</option>`
+          ).join('')}
+        </select>
+
+        <button type="submit">${editingIndex !== null ? 'حفظ التعديلات' : 'إضافة المقال'}</button>
+      </form>
+    `;
+
+    const backBtn = mainContent.querySelector('.back-btn');
+    backBtn.onclick = () => renderMediaCards(filteredItems);
+    backBtn.onkeydown = (e) => {
+      if(e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        backBtn.click();
+      }
+    };
+
+    const form = document.getElementById('addEditForm');
+    form.onsubmit = e => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const newItem = {
+        title: formData.get('title').trim(),
+        description: formData.get('description').trim(),
+        story: formData.get('story').trim(),
+        thumbnail: formData.get('thumbnail').trim(),
+        embedLink: formData.get('embedLink').trim(),
+        downloadLinks: formData.get('downloadLinks').split(',').map(d => d.trim()).filter(d => d),
+        category: formData.get('category')
+      };
+      if(!newItem.title || !newItem.description || !newItem.category){
+        alert('لازم تعبي العنوان والوصف والتصنيف.');
+        return;
+      }
+      if(editingIndex !== null){
+        // تعديل
+        const globalIndex = mediaItems.indexOf(filteredItems[editingIndex]);
+        if(globalIndex > -1){
+          mediaItems[globalIndex] = newItem;
+        }
+      } else {
+        // إضافة جديد
+        mediaItems.push(newItem);
+      }
+      saveAndRefresh();
+    };
+  }
+
+  // هروب من XSS بسيط
+  function escapeHtml(text) {
+    if(!text) return '';
+    return text.replace(/[&<>"']/g, function(m) {
+      return ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      })[m];
     });
   }
 
-  // --- التعامل مع اختيار الفئات ---
-  navButtons.forEach(btn => {
-    btn.onclick = () => {
-      if (currentView !== 'list') {
-        currentView = 'list';
-        renderList();
-      }
-      currentCategory = btn.getAttribute('data-cat');
-      setActiveCategoryButton(currentCategory);
-      // تحديث العناصر حسب التصنيف
-      filteredItems = currentCategory === 'all' ? [...mediaItems] : mediaItems.filter(i => i.category === currentCategory);
-      renderMediaCards(filteredItems);
-    };
-  });
-
-  // --- زر إضافة العنصر (يتحقق من كلمة السر) ---
-  navAddBtn.onclick = () => {
-    const pass = prompt("أدخل كلمة سر مالك الموقع:");
-    if (pass === OWNER_PASSWORD) {
-      currentView = 'add';
-      renderAddForm();
+  // البحث
+  searchInput.oninput = () => {
+    const term = searchInput.value.trim().toLowerCase();
+    if(!term) {
+      filteredItems = filterByCategory(currentCategory);
     } else {
-      alert("كلمة السر خطأ يا ذيب!");
+      filteredItems = filterByCategory(currentCategory).filter(item => 
+        item.title.toLowerCase().includes(term) ||
+        item.description.toLowerCase().includes(term) ||
+        (item.story && item.story.toLowerCase().includes(term))
+      );
     }
+    renderMediaCards(filteredItems);
   };
 
-  // --- تحميل الصفحة ---
-  function init() {
-    currentView = 'list';
-    currentCategory = 'all';
-    filteredItems = [...mediaItems];
-    setActiveCategoryButton('all');
-    renderList();
+  // بدء البرنامج
+
+  if(mediaItems.length === 0){
+    // مثال جاهز واحد يشتغل
+    mediaItems.push({
+      title: "فيلم الأكشن الأول",
+      description: "فيلم أكشن رهيب مع قصص مشوقة.",
+      story: "هذه قصة الفيلم بكل تفاصيله الرهيبة...",
+      thumbnail: "https://via.placeholder.com/300x140?text=فيلم+أكشن",
+      embedLink: "https://www.youtube.com/embed/tgbNymZ7vqY",
+      downloadLinks: ["https://example.com/download1"],
+      category: "action"
+    });
+    localStorage.setItem('mediaItems', JSON.stringify(mediaItems));
   }
 
-  // بداية
-  init();
+  currentCategory = 'all';
+  filteredItems = filterByCategory(currentCategory);
+  renderCategoryButtons();
+  renderMediaCards(filteredItems);
 
 })();
 </script>
