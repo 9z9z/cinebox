@@ -1,804 +1,940 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>موقع الأفلام والمسلسلات والأنمي - شرير ومطيع</title>
-<style>
-  /* RESET */
-  * {
-    box-sizing: border-box;
-    margin: 0; padding: 0;
-  }
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #121212;
-    color: #eee;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  header {
-    width: 100%;
-    background: #1f1f1f;
-    padding: 15px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.7);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    user-select: none;
-  }
-  nav {
-    max-width: 1200px;
-    margin: auto;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  nav button {
-    background: #333;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    color: #eee;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  nav button.active, nav button:hover {
-    background: #ff5722;
-  }
-  #searchInput {
-    margin: 15px auto;
-    display: block;
-    width: 90%;
-    max-width: 450px;
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: none;
-    font-size: 18px;
-    background: #222;
-    color: #eee;
-  }
-  #searchInput::placeholder {
-    color: #999;
-  }
-
-  /* السلايدر */
-  .slider-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    scroll-behavior: smooth;
-    display: flex;
-    gap: 15px;
-  }
-  .slider-container::-webkit-scrollbar {
-    height: 10px;
-  }
-  .slider-container::-webkit-scrollbar-thumb {
-    background: #ff5722;
-    border-radius: 8px;
-  }
-  .slider-item {
-    flex: 0 0 auto;
-    width: 220px;
-    background: #222;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-  }
-  .slider-item:hover {
-    transform: scale(1.07);
-    box-shadow: 0 4px 15px #ff5722cc;
-  }
-  .slider-item img {
-    width: 100%;
-    border-radius: 10px 10px 0 0;
-    height: 130px;
-    object-fit: cover;
-  }
-  .slider-item h3 {
-    padding: 12px 10px;
-    font-size: 18px;
-    text-align: center;
-  }
-
-  /* المحتوى الرئيسي */
-  main {
-    max-width: 1200px;
-    width: 95%;
-    margin: 20px auto 50px;
-  }
-  .media-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
-    gap: 20px;
-  }
-  .media-card {
-    background: #222;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 2px 8px #000;
-    transition: box-shadow 0.3s ease;
-  }
-  .media-card:hover {
-    box-shadow: 0 6px 20px #ff5722cc;
-  }
-  .media-thumb {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    display: block;
-  }
-  .media-info {
-    padding: 10px 15px;
-  }
-  .media-info h3 {
-    font-size: 20px;
-    margin-bottom: 7px;
-  }
-  .media-info p {
-    font-size: 14px;
-    line-height: 1.3;
-    color: #ccc;
-    height: 48px;
-    overflow: hidden;
-  }
-  .btn-add {
-    background: #ff5722;
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 20px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 30px;
-    display: block;
-    width: 220px;
-    text-align: center;
-    transition: background 0.3s ease;
-  }
-  .btn-add:hover {
-    background: #e64a19;
-  }
-
-  /* صفحة التفاصيل */
-  .details-container {
-    background: #222;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 18px #000;
-  }
-  .details-back {
-    color: #ff5722;
-    cursor: pointer;
-    font-weight: 700;
-    margin-bottom: 20px;
-    display: inline-block;
-  }
-  .details-title {
-    font-size: 28px;
-    margin-bottom: 12px;
-    font-weight: 800;
-  }
-  .details-desc, .details-story {
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: #ddd;
-    line-height: 1.5;
-  }
-  .details-category {
-    margin-bottom: 15px;
-    font-weight: 700;
-    color: #ff7043;
-  }
-
-  /* المشغل */
-  .video-player {
-    width: 100%;
-    border-radius: 12px;
-    background: #000;
-    position: relative;
-    overflow: hidden;
-  }
-  video {
-    width: 100%;
-    height: 400px;
-    background: black;
-    outline: none;
-  }
-  .server-list {
-    margin-top: 15px;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-  .server-list button {
-    background: #333;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    color: #eee;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s ease;
-  }
-  .server-list button.active, .server-list button:hover {
-    background: #ff5722;
-  }
-
-  /* روابط التحميل */
-  .download-links {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  .download-links a {
-    background: #ff5722;
-    padding: 12px 22px;
-    color: white;
-    font-weight: 700;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: background 0.3s ease;
-  }
-  .download-links a:hover {
-    background: #e64a19;
-  }
-
-  /* حقوق الموقع */
-  footer {
-    width: 100%;
-    text-align: center;
-    color: #555;
-    font-size: 14px;
-    padding: 10px 0 30px;
-    user-select: none;
-  }
-
-  /* نموذج الإضافة والتعديل */
-  form#addEditForm {
-    background: #222;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  form#addEditForm label {
-    display: block;
-    margin-top: 15px;
-    font-weight: 700;
-  }
-  form#addEditForm input[type="text"],
-  form#addEditForm textarea,
-  form#addEditForm select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border-radius: 8px;
-    border: none;
-    background: #333;
-    color: #eee;
-    font-size: 16px;
-    resize: vertical;
-  }
-  form#addEditForm textarea {
-    min-height: 100px;
-  }
-  form#addEditForm button {
-    margin-top: 25px;
-    background: #ff5722;
-    border: none;
-    color: white;
-    font-weight: 700;
-    padding: 14px 24px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  form#addEditForm button:hover {
-    background: #e64a19;
-  }
-
-  /* زر الحذف والتعديل */
-  .actions-btns {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-  }
-  .actions-btns button {
-    background: #d32f2f;
-    border: none;
-    color: #fff;
-    font-weight: 700;
-    padding: 10px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  .actions-btns button.edit-btn {
-    background: #1976d2;
-  }
-  .actions-btns button:hover {
-    opacity: 0.9;
-  }
-
-  /* وسائل الإعلام */
-  @media (max-width: 650px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>موقع الأفلام والمسلسلات والأنمي - شرير ومطيع</title>
+  <style>
+    /* التصميم الأساسي */
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
+      direction: rtl;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    header, footer {
+      background: #1f1f1f;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      letter-spacing: 1.2px;
+      user-select: none;
+    }
+    main {
+      max-width: 1200px;
+      margin: 15px auto;
+      padding: 0 15px 50px;
+    }
+    /* القائمة الرئيسية */
+    #categoryNav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    #categoryNav button {
+      background: #333;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 22px;
+      color: #ccc;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    #categoryNav button.active,
+    #categoryNav button:hover {
+      background: #00aaff;
+      color: #fff;
+      box-shadow: 0 0 10px #00aaff;
+    }
+    /* البحث */
+    #searchInput {
+      display: block;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto 30px;
+      padding: 10px 15px;
+      border-radius: 30px;
+      border: none;
+      font-size: 1rem;
+      background: #222;
+      color: #eee;
+      box-shadow: inset 0 0 5px #000;
+      outline: none;
+      transition: background 0.3s;
+    }
+    #searchInput::placeholder {
+      color: #666;
+    }
+    #searchInput:focus {
+      background: #111;
+      box-shadow: 0 0 8px #00aaff;
+    }
+    /* السلايدر */
+    .slider-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 14px;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .slider-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .slider-container::-webkit-scrollbar-thumb {
+      background: #00aaff;
+      border-radius: 10px;
+    }
     .slider-item {
-      width: 160px;
+      flex: 0 0 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #222;
+      cursor: pointer;
+      box-shadow: 0 0 10px #004466;
+      user-select: none;
+      transition: transform 0.3s ease;
+      outline-offset: 2px;
     }
+    .slider-item:focus,
+    .slider-item:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 18px #00aaff;
+    }
+    .slider-item img {
+      width: 100%;
+      height: 125px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #444;
+    }
+    .slider-item h3 {
+      text-align: center;
+      font-weight: 700;
+      padding: 12px 10px;
+      font-size: 1.1rem;
+      color: #00aaff;
+      margin: 0;
+    }
+    /* بطاقات المحتوى */
     .media-list {
-      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
     }
-    video {
-      height: 220px;
+    .media-card {
+      background: #222;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 8px #003344;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      outline-offset: 3px;
+      transition: transform 0.3s ease;
+      user-select: none;
     }
-  }
-</style>
+    .media-card:focus,
+    .media-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00aaff;
+    }
+    .media-thumb {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-bottom: 1px solid #444;
+      flex-shrink: 0;
+    }
+    .media-info {
+      padding: 15px 18px;
+      flex-grow: 1;
+    }
+    .media-info h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.3rem;
+      color: #00ccff;
+    }
+    .media-info p {
+      font-size: 0.9rem;
+      color: #aaa;
+      line-height: 1.3;
+      max-height: 65px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* تفاصيل المقال */
+    #detailsSection {
+      background: #1b1b1b;
+      border-radius: 14px;
+      padding: 25px 30px;
+      box-shadow: 0 0 30px #004466;
+      max-width: 900px;
+      margin: 30px auto;
+      position: relative;
+    }
+    .details-back {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #004466;
+      color: #00aaff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    .details-back:hover,
+    .details-back:focus {
+      background: #00aaff;
+      color: #121212;
+      outline: none;
+    }
+    .details-title {
+      font-size: 2.3rem;
+      margin-bottom: 10px;
+      color: #00ccff;
+    }
+    .details-category {
+      font-weight: 600;
+      color: #3399cc;
+      margin-bottom: 15px;
+    }
+    .details-desc,
+    .details-story {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      color: #ddd;
+      white-space: pre-wrap;
+    }
+    /* مشغل الفيديو */
+    .video-player {
+      background: #111;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00aaffaa;
+      margin-bottom: 18px;
+      position: relative;
+      max-height: 460px;
+    }
+    video#videoPlayer {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 14px;
+      background: black;
+      outline: none;
+    }
+    /* زر تشغيل/إيقاف مخصص */
+    .video-controls {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
+    .btn-playpause {
+      background: #00aaff;
+      border: none;
+      padding: 8px 14px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #121212;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00aaff;
+      transition: background 0.25s ease;
+    }
+    .btn-playpause:hover,
+    .btn-playpause:focus {
+      background: #0099dd;
+      outline: none;
+    }
+    /* السلايدر للسيرفرات */
+    .server-list {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .server-list button {
+      background: #222;
+      border: 1.5px solid #00aaff;
+      padding: 7px 16px;
+      border-radius: 25px;
+      font-weight: 600;
+      color: #00aaff;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+    .server-list button.active,
+    .server-list button:hover {
+      background: #00aaff;
+      color: #121212;
+      box-shadow: 0 0 15px #00aaff;
+      border-color: #0099dd;
+    }
+    /* روابط التحميل */
+    .download-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .download-links a {
+      background: #004466;
+      padding: 9px 18px;
+      border-radius: 25px;
+      color: #00ccff;
+      font-weight: 600;
+      text-decoration: none;
+      user-select: none;
+      box-shadow: 0 0 8px #0099dd;
+      transition: all 0.3s ease;
+    }
+    .download-links a:hover,
+    .download-links a:focus {
+      background: #0099dd;
+      box-shadow: 0 0 12px #00ccff;
+      outline: none;
+    }
+    /* أزرار الإضافة والتعديل */
+    .actions-btns {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    .actions-btns button {
+      background: #00aaff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #121212;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00aaff;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    .actions-btns button:hover,
+    .actions-btns button:focus {
+      background: #0088cc;
+      outline: none;
+    }
+    /* نموذج الإضافة / التعديل */
+    #addEditForm {
+      max-width: 720px;
+      margin: 40px auto;
+      background: #222;
+      border-radius: 15px;
+      padding: 25px 30px;
+      box-shadow: 0 0 25px #003344;
+      color: #eee;
+      user-select: none;
+    }
+    #addEditForm h2 {
+      margin-top: 0;
+      color: #00ccff;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.9rem;
+    }
+    #addEditForm label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #aaddff;
+    }
+    #addEditForm input[type="text"],
+    #addEditForm textarea,
+    #addEditForm select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      background: #111;
+      color: #eee;
+      resize: vertical;
+      box-shadow: inset 0 0 6px #000;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+    #addEditForm input[type="text"]:focus,
+    #addEditForm textarea:focus,
+    #addEditForm select:focus {
+      box-shadow: 0 0 8px #00aaff;
+    }
+    #addEditForm textarea {
+      min-height: 110px;
+      line-height: 1.4;
+    }
+    #addEditForm button[type="submit"] {
+      background: #00aaff;
+      border: none;
+      padding: 14px 0;
+      width: 100%;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #121212;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #00aaff;
+      transition: background 0.3s ease;
+      user-select: none;
+      margin-top: 20px;
+    }
+    #addEditForm button[type="submit"]:hover,
+    #addEditForm button[type="submit"]:focus {
+      background: #0088cc;
+      outline: none;
+    }
+    /* رسالة التنبيه */
+    .alert-msg {
+      background: #bb0000aa;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 0 12px #cc0000;
+    }
+  </style>
 </head>
 <body>
+  <header>موقع الأفلام والمسلسلات والأنمي - شرير ومطيع</header>
+  <main>
+    <!-- اختيار التصنيف -->
+    <nav id="categoryNav" role="navigation" aria-label="اختيار التصنيف">
+      <button class="active" data-category="all" aria-pressed="true">الكل</button>
+      <button data-category="movies" aria-pressed="false">أفلام</button>
+      <button data-category="series" aria-pressed="false">مسلسلات</button>
+      <button data-category="anime" aria-pressed="false">أنمي</button>
+    </nav>
+    <!-- البحث -->
+    <input type="search" id="searchInput" aria-label="البحث عن فيلم أو مسلسل أو أنمي" placeholder="ابحث هنا..." />
 
-<header>
-  <nav id="categoryNav" aria-label="قائمة تصنيفات الأفلام والمسلسلات والأنمي"></nav>
-  <input type="search" id="searchInput" placeholder="ابحث عن أي فيلم، مسلسل أو أنمي..." aria-label="بحث" />
-</header>
-
-<main id="mainContent" tabindex="0" aria-live="polite">
-  <!-- هنا السلايدر -->
-  <section class="slider-container" id="slider"></section>
-
-  <!-- هنا المحتوى -->
-  <section class="media-list" id="mediaList"></section>
-
-  <!-- إضافة / تعديل مقال -->
-  <form id="addEditForm" style="display:none;" aria-label="نموذج إضافة أو تعديل مقال">
-    <h2 id="formTitle">إضافة مقال جديد</h2>
-    <label for="inputTitle">اسم المقال</label>
-    <input type="text" id="inputTitle" required autocomplete="off" />
-
-    <label for="inputDescription">وصف مختصر</label>
-    <input type="text" id="inputDescription" required autocomplete="off" />
-
-    <label for="inputStory">القصة كاملة</label>
-    <textarea id="inputStory" required></textarea>
-
-    <label for="inputThumbnail">رابط صورة الغلاف</label>
-    <input type="text" id="inputThumbnail" placeholder="https://example.com/image.jpg" required autocomplete="off" />
-
-    <label for="inputEmbed">رابط الفيديو (mp4)</label>
-    <input type="text" id="inputEmbed" placeholder="https://example.com/video.mp4" required autocomplete="off" />
-
-    <label for="inputCategory">التصنيف</label>
-    <select id="inputCategory" required>
-      <option value="">اختر تصنيف</option>
-      <option value="action">أكشن</option>
-      <option value="drama">دراما</option>
-      <option value="anime">أنمي</option>
-      <option value="serial">مسلسلات</option>
-    </select>
-
-    <label for="inputDownloadLinks">روابط التحميل (افصل بينها بفواصل)</label>
-    <input type="text" id="inputDownloadLinks" placeholder="https://example.com/dl1, https://example.com/dl2" autocomplete="off" />
-
-    <button type="submit">حفظ المقال</button>
-  </form>
-
-  <!-- صفحة التفاصيل (مخفية حتى تظهر عند الضغط) -->
-  <section id="detailsSection" style="display:none;">
-    <span class="details-back" tabindex="0" role="button" aria-label="العودة للصفحة الرئيسية">&larr; رجوع</span>
-    <h1 class="details-title"></h1>
-    <p class="details-category"></p>
-    <p class="details-desc"></p>
-    <p class="details-story"></p>
-
-    <div class="video-player" aria-label="مشغل الفيديو">
-      <video id="videoPlayer" controls preload="metadata" crossorigin="anonymous" aria-describedby="videoDesc"></video>
-      <p id="videoDesc" style="display:none;">مشغل فيديو خاص بالموقع مع سيرفرات المشاهدة وروابط التحميل</p>
+    <!-- السلايدر -->
+    <div class="slider-container" aria-label="سلايدر أحدث العناوين" tabindex="0">
+      <!-- محتويات السلايدر يضيفها الجافاسكربت -->
     </div>
 
-    <div class="server-list" aria-label="سيرفرات المشاهدة"></div>
-    <div class="download-links" aria-label="روابط التحميل"></div>
+    <!-- قائمة المحتوى -->
+    <section class="media-list" aria-live="polite" aria-label="قائمة الأفلام والمسلسلات والأنمي">
+      <!-- بطاقات المحتوى يضيفها الجافاسكربت -->
+    </section>
 
+    <!-- تفاصيل العنصر المختار -->
+    <section id="detailsSection" hidden>
+      <button class="details-back" aria-label="العودة إلى القائمة">رجوع</button>
+      <h2 class="details-title"></h2>
+      <p class="details-category"></p>
+      <p class="details-desc"></p>
+      <p class="details-story"></p>
+
+      <!-- مشغل الفيديو -->
+      <div class="video-player" aria-label="مشغل الفيديو">
+        <video id="videoPlayer" controls tabindex="0" aria-describedby="videoDesc"></video>
+        <div class="video-controls">
+          <button id="btnPlayPause" class="btn-playpause" aria-label="تشغيل أو إيقاف الفيديو">▶️</button>
+        </div>
+        <div id="videoDesc" hidden>فيديو الفيلم أو المسلسل</div>
+      </div>
+
+      <!-- سيرفرات المشاهدة -->
+      <div class="server-list" aria-label="اختيار سيرفر المشاهدة">
+        <!-- أزرار السيرفرات -->
+      </div>
+
+      <!-- روابط التحميل -->
+      <div class="download-links" aria-label="روابط التحميل">
+        <!-- روابط التحميل -->
+      </div>
+    </section>
+
+    <!-- إضافة أو تعديل -->
+    <section id="addEditForm" hidden>
+      <h2>إضافة / تعديل مقالة</h2>
+      <form id="mediaForm" novalidate>
+        <label for="mediaType">نوع المحتوى</label>
+        <select id="mediaType" required>
+          <option value="">اختر النوع</option>
+          <option value="movies">فيلم</option>
+          <option value="series">مسلسل</option>
+          <option value="anime">أنمي</option>
+        </select>
+
+        <label for="mediaTitle">اسم المحتوى</label>
+        <input type="text" id="mediaTitle" placeholder="ادخل اسم الفيلم أو المسلسل أو الأنمي" required />
+
+        <label for="mediaDesc">وصف مختصر</label>
+        <textarea id="mediaDesc" placeholder="وصف مختصر للمحتوى" required></textarea>
+
+        <label for="mediaStory">قصة أو تفاصيل</label>
+        <textarea id="mediaStory" placeholder="تفاصيل أو قصة المحتوى" required></textarea>
+
+        <label for="mediaPoster">رابط صورة الغلاف</label>
+        <input type="text" id="mediaPoster" placeholder="رابط صورة الغلاف (URL)" required />
+
+        <label for="mediaVideo">رفع فيديو (اختياري)</label>
+        <input type="file" id="mediaVideo" accept="video/*" />
+
+        <button type="submit">حفظ المقالة</button>
+      </form>
+    </section>
+
+    <!-- أزرار التحكم -->
     <div class="actions-btns">
-      <button class="edit-btn" aria-label="تعديل المقال">تعديل</button>
-      <button class="delete-btn" aria-label="حذف المقال">حذف</button>
+      <button id="btnAddNew" aria-haspopup="true" aria-controls="addEditForm">إضافة مقال جديد</button>
+      <button id="btnEdit" disabled>تعديل المقال الحالي</button>
+      <button id="btnDelete" disabled>حذف المقال الحالي</button>
+      <button id="btnCloseForm" hidden>إلغاء</button>
     </div>
-  </section>
-</main>
+  </main>
 
-<footer>حقوق الموقع محفوظة © 2025 - شرير ومطيع</footer>
+  <footer>حقوق الموقع © 2025 شرير ومطيع</footer>
 
-<script>
-(() => {
-  const OWNER_PASSWORD = 'secret123'; // كلمة السر للتحكم بالتعديل والحذف والإضافة
+  <script>
+    (() => {
+      "use strict";
 
-  // العناصر
-  const categoryNav = document.getElementById('categoryNav');
-  const searchInput = document.getElementById('searchInput');
-  const slider = document.getElementById('slider');
-  const mediaList = document.getElementById('mediaList');
-  const addEditForm = document.getElementById('addEditForm');
-  const detailsSection = document.getElementById('detailsSection');
-  const videoPlayer = document.getElementById('videoPlayer');
-  const serverList = detailsSection.querySelector('.server-list');
-  const downloadLinksContainer = detailsSection.querySelector('.download-links');
-  const editBtn = detailsSection.querySelector('.edit-btn');
-  const deleteBtn = detailsSection.querySelector('.delete-btn');
-  const formTitle = document.getElementById('formTitle');
+      // بيانات وهمية كمثال - ممكن تعوضها بقاعدة بيانات فعلية
+      let mediaItems = [
+        {
+          id: 1,
+          type: "movies",
+          title: "قصة الفارس الشرير",
+          description: "فيلم أكشن ودراما مثير عن فارس لا يرحم.",
+          story: "تدور القصة حول فارس يتحدى كل شيء في طريقه وينتصر...",
+          poster: "https://i.imgur.com/NbXYH9t.jpg",
+          videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+          downloadLinks: ["https://example.com/download1.mp4"]
+        },
+        {
+          id: 2,
+          type: "series",
+          title: "مسلسل الانتقام",
+          description: "دراما جريمة مشوقة مليئة بالأحداث المثيرة.",
+          story: "شاب يسعى للانتقام ممن ظلموه، القصة مليانة مفاجآت...",
+          poster: "https://i.imgur.com/YEdq3uP.jpg",
+          videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm",
+          downloadLinks: []
+        },
+        {
+          id: 3,
+          type: "anime",
+          title: "أنمي القوة الغامضة",
+          description: "أنمي مغامرات وقوى خارقة مليء بالتشويق.",
+          story: "شاب يكتشف قواه الخارقة ويحارب الشر في عالمه...",
+          poster: "https://i.imgur.com/9zvRILR.jpg",
+          videoSrc: "",
+          downloadLinks: []
+        },
+      ];
 
-  // حقول الفورم
-  const inputTitle = document.getElementById('inputTitle');
-  const inputDescription = document.getElementById('inputDescription');
-  const inputStory = document.getElementById('inputStory');
-  const inputThumbnail = document.getElementById('inputThumbnail');
-  const inputEmbed = document.getElementById('inputEmbed');
-  const inputCategory = document.getElementById('inputCategory');
-  const inputDownloadLinks = document.getElementById('inputDownloadLinks');
+      let currentCategory = "all";
+      let filteredItems = [...mediaItems];
+      let currentItem = null;
 
-  // التصنيفات
-  const categories = [
-    { id: 'all', name: 'الكل' },
-    { id: 'action', name: 'أكشن' },
-    { id: 'drama', name: 'دراما' },
-    { id: 'anime', name: 'أنمي' },
-    { id: 'serial', name: 'مسلسلات' }
-  ];
+      // عناصر DOM
+      const categoryNav = document.getElementById("categoryNav");
+      const searchInput = document.getElementById("searchInput");
+      const sliderContainer = document.querySelector(".slider-container");
+      const mediaList = document.querySelector(".media-list");
+      const detailsSection = document.getElementById("detailsSection");
+      const detailsBackBtn = detailsSection.querySelector(".details-back");
+      const detailsTitle = detailsSection.querySelector(".details-title");
+      const detailsCategory = detailsSection.querySelector(".details-category");
+      const detailsDesc = detailsSection.querySelector(".details-desc");
+      const detailsStory = detailsSection.querySelector(".details-story");
+      const videoPlayer = document.getElementById("videoPlayer");
+      const btnPlayPause = document.getElementById("btnPlayPause");
+      const serverList = detailsSection.querySelector(".server-list");
+      const downloadLinksDiv = detailsSection.querySelector(".download-links");
 
-  // البيانات (نستخدم localStorage عشان يكون عندك التعديل والحذف والإضافة)
-  let mediaItems = JSON.parse(localStorage.getItem('mediaItems') || '[]');
+      // أزرار التحكم
+      const btnAddNew = document.getElementById("btnAddNew");
+      const btnEdit = document.getElementById("btnEdit");
+      const btnDelete = document.getElementById("btnDelete");
+      const btnCloseForm = document.getElementById("btnCloseForm");
+      const addEditFormSection = document.getElementById("addEditForm");
+      const mediaForm = document.getElementById("mediaForm");
+      const mediaTypeInput = document.getElementById("mediaType");
+      const mediaTitleInput = document.getElementById("mediaTitle");
+      const mediaDescInput = document.getElementById("mediaDesc");
+      const mediaStoryInput = document.getElementById("mediaStory");
+      const mediaPosterInput = document.getElementById("mediaPoster");
+      const mediaVideoInput = document.getElementById("mediaVideo");
 
-  if (mediaItems.length === 0) {
-    // بيانات مبدئية عشان يبدأ الموقع ما يطلع فاضي
-    mediaItems.push(
-      {
-        id: generateId(),
-        title: "فيلم الأكشن الأول",
-        description: "فيلم أكشن رهيب مع قصص مشوقة.",
-        story: "هذه قصة الفيلم بكل تفاصيله الرهيبة، مع مشاهد الأكشن والدراما.",
-        thumbnail: "https://via.placeholder.com/300x140?text=فيلم+أكشن",
-        embedLinks: [{serverName: "السيرفر الرئيسي", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}],
-        category: "action",
-        downloadLinks: ["https://example.com/download1"]
-      },
-      {
-        id: generateId(),
-        title: "مسلسل درامي رهيب",
-        description: "مسلسل درامي يأخذك لعالم مختلف.",
-        story: "قصة المسلسل كلها مثيرة ومليانة أحداث وتشويق.",
-        thumbnail: "https://via.placeholder.com/300x140?text=مسلسل+درامي",
-        embedLinks: [{serverName: "السيرفر الأول", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"}],
-        category: "drama",
-        downloadLinks: ["https://example.com/drama-download"]
-      },
-      {
-        id: generateId(),
-        title: "أنمي مميز",
-        description: "أفضل الأنميات في مكان واحد.",
-        story: "قصة الأنمي تأخذك في رحلة فريدة من نوعها.",
-        thumbnail: "https://via.placeholder.com/300x140?text=أنمي",
-        embedLinks: [{serverName: "السيرفر الرسمي", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"}],
-        category: "anime",
-        downloadLinks: ["https://example.com/anime-download"]
+      // تحديث الأزرار للعرض
+      function updateActionButtons() {
+        const hasSelection = currentItem !== null;
+        btnEdit.disabled = !hasSelection;
+        btnDelete.disabled = !hasSelection;
       }
-    );
-    saveData();
-  }
 
-  // الحالة الحالية
-  let currentCategory = 'all';
-  let filteredItems = [...mediaItems];
-  let editingItemId = null;
+      // تصفية المحتويات حسب التصنيف والبحث
+      function filterMedia() {
+        let searchTerm = searchInput.value.trim().toLowerCase();
+        filteredItems = mediaItems.filter(item => {
+          const matchesCategory = currentCategory === "all" || item.type === currentCategory;
+          const matchesSearch = item.title.toLowerCase().includes(searchTerm);
+          return matchesCategory && matchesSearch;
+        });
+      }
 
-  // التهيئة
-  function init() {
-    renderCategories();
-    renderSlider();
-    renderMediaCards(filteredItems);
-    setupEvents();
-  }
+      // إنشاء بطاقة عرض واحدة
+      function createMediaCard(item) {
+        const card = document.createElement("article");
+        card.className = "media-card";
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `عرض تفاصيل ${item.title}`);
 
-  // حفظ البيانات في localStorage
-  function saveData() {
-    localStorage.setItem('mediaItems', JSON.stringify(mediaItems));
-  }
+        const img = document.createElement("img");
+        img.className = "media-thumb";
+        img.src = item.poster;
+        img.alt = `صورة غلاف ${item.title}`;
+        card.appendChild(img);
 
-  // توليد id فريد
-  function generateId() {
-    return 'id-' + Math.random().toString(36).substr(2, 9);
-  }
+        const info = document.createElement("div");
+        info.className = "media-info";
 
-  // عرض التصنيفات
-  function renderCategories() {
-    categoryNav.innerHTML = '';
-    categories.forEach(cat => {
-      const btn = document.createElement('button');
-      btn.textContent = cat.name;
-      btn.dataset.cat = cat.id;
-      btn.classList.toggle('active', cat.id === currentCategory);
-      btn.setAttribute('aria-pressed', cat.id === currentCategory);
-      btn.addEventListener('click', () => {
-        if(currentCategory !== cat.id){
-          currentCategory = cat.id;
-          filterAndRender();
+        const title = document.createElement("h3");
+        title.textContent = item.title;
+        info.appendChild(title);
+
+        const desc = document.createElement("p");
+        desc.textContent = item.description;
+        info.appendChild(desc);
+
+        card.appendChild(info);
+
+        card.addEventListener("click", () => {
+          openDetails(item.id);
+        });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openDetails(item.id);
+          }
+        });
+
+        return card;
+      }
+
+      // إنشاء عنصر للسلايدر
+      function createSliderItem(item) {
+        const slide = document.createElement("div");
+        slide.className = "slider-item";
+        slide.setAttribute("tabindex", "0");
+        slide.setAttribute("role", "button");
+        slide.setAttribute("aria-label", `مشاهدة ${item.title}`);
+
+        const img = document.createElement("img");
+        img.src = item.poster;
+        img.alt = `غلاف ${item.title}`;
+        slide.appendChild(img);
+
+        const title = document.createElement("h3");
+        title.textContent = item.title;
+        slide.appendChild(title);
+
+        slide.addEventListener("click", () => {
+          openDetails(item.id);
+        });
+        slide.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openDetails(item.id);
+          }
+        });
+
+        return slide;
+      }
+
+      // عرض القائمة والسلايدر
+      function renderMedia() {
+        // تصفية البيانات
+        filterMedia();
+
+        // عرض السلايدر (آخر 6 عناصر)
+        sliderContainer.innerHTML = "";
+        let sliderItems = filteredItems.slice(0, 6);
+        sliderItems.forEach(item => {
+          sliderContainer.appendChild(createSliderItem(item));
+        });
+
+        // عرض قائمة المحتوى
+        mediaList.innerHTML = "";
+        filteredItems.forEach(item => {
+          mediaList.appendChild(createMediaCard(item));
+        });
+
+        // إخفاء تفاصيل إذا كانت مفتوحة
+        closeDetails();
+        updateActionButtons();
+      }
+
+      // فتح تفاصيل عنصر معين
+      function openDetails(id) {
+        const item = mediaItems.find(i => i.id === id);
+        if (!item) return;
+
+        currentItem = item;
+        updateActionButtons();
+
+        detailsTitle.textContent = item.title;
+        detailsCategory.textContent = `النوع: ${categoryName(item.type)}`;
+        detailsDesc.textContent = item.description;
+        detailsStory.textContent = item.story || "لا توجد قصة متاحة.";
+
+        // عرض الفيديو
+        if (item.videoSrc) {
+          videoPlayer.src = item.videoSrc;
+          btnPlayPause.textContent = "⏸️";
+        } else {
+          videoPlayer.removeAttribute("src");
+          btnPlayPause.textContent = "▶️";
+        }
+        videoPlayer.pause();
+
+        // عرض السيرفرات (حاليا نعرض سيرفر واحد: الفيديو نفسه أو رفع فيديو)
+        serverList.innerHTML = "";
+        const defaultServerBtn = document.createElement("button");
+        defaultServerBtn.textContent = "السيرفر الرئيسي";
+        defaultServerBtn.classList.add("active");
+        defaultServerBtn.setAttribute("aria-pressed", "true");
+        serverList.appendChild(defaultServerBtn);
+
+        // روابط التحميل
+        downloadLinksDiv.innerHTML = "";
+        if (item.downloadLinks && item.downloadLinks.length > 0) {
+          item.downloadLinks.forEach((link, i) => {
+            const a = document.createElement("a");
+            a.href = link;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = `تحميل ${i + 1}`;
+            downloadLinksDiv.appendChild(a);
+          });
+        } else {
+          downloadLinksDiv.textContent = "لا توجد روابط تحميل متاحة.";
+        }
+
+        // إظهار القسم
+        detailsSection.hidden = false;
+        addEditFormSection.hidden = true;
+        mediaList.hidden = true;
+        sliderContainer.hidden = true;
+        categoryNav.hidden = true;
+        searchInput.hidden = true;
+        btnAddNew.hidden = false;
+        btnEdit.hidden = false;
+        btnDelete.hidden = false;
+        btnCloseForm.hidden = true;
+      }
+
+      // إغلاق تفاصيل العنصر
+      function closeDetails() {
+        currentItem = null;
+        updateActionButtons();
+        detailsSection.hidden = true;
+        mediaList.hidden = false;
+        sliderContainer.hidden = false;
+        categoryNav.hidden = false;
+        searchInput.hidden = false;
+      }
+
+      // تحويل نوع المحتوى للاسم العربي
+      function categoryName(type) {
+        switch(type) {
+          case "movies": return "أفلام";
+          case "series": return "مسلسلات";
+          case "anime": return "أنمي";
+          default: return "غير معروف";
+        }
+      }
+
+      // التحكم في أزرار الفئات
+      categoryNav.addEventListener("click", e => {
+        if (e.target.tagName === "BUTTON") {
+          currentCategory = e.target.dataset.category;
+          // ضبط حالة الأزرار
+          [...categoryNav.children].forEach(btn => {
+            btn.classList.toggle("active", btn === e.target);
+            btn.setAttribute("aria-pressed", btn === e.target ? "true" : "false");
+          });
+          renderMedia();
         }
       });
-      categoryNav.appendChild(btn);
-    });
-  }
 
-  // ترشيح حسب التصنيف والبحث
-  function filterAndRender() {
-    filteredItems = mediaItems.filter(item => {
-      const matchCat = currentCategory === 'all' || item.category === currentCategory;
-      const searchTerm = searchInput.value.trim().toLowerCase();
-      const matchSearch = item.title.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm);
-      return matchCat && matchSearch;
-    });
-    renderSlider();
-    renderMediaCards(filteredItems);
-  }
-
-  // عرض السلايدر (يعرض 5 أول عناصر من filteredItems)
-  function renderSlider() {
-    slider.innerHTML = '';
-    filteredItems.slice(0, 5).forEach(item => {
-      const slide = document.createElement('div');
-      slide.classList.add('slider-item');
-      slide.tabIndex = 0;
-      slide.setAttribute('role', 'button');
-      slide.setAttribute('aria-label', `عرض تفاصيل ${item.title}`);
-      slide.innerHTML = `
-        <img src="${item.thumbnail}" alt="صورة ${item.title}" />
-        <h3>${item.title}</h3>
-      `;
-      slide.onclick = () => showDetails(item.id);
-      slide.onkeypress = (e) => { if(e.key === 'Enter') showDetails(item.id); };
-      slider.appendChild(slide);
-    });
-  }
-
-  // عرض بطاقات المحتوى
-  function renderMediaCards(items) {
-    mediaList.innerHTML = '';
-    if(items.length === 0){
-      mediaList.innerHTML = '<p style="text-align:center; color:#999; margin-top: 40px;">لا توجد نتائج.</p>';
-      return;
-    }
-    items.forEach(item => {
-      const card = document.createElement('article');
-      card.className = 'media-card';
-      card.tabIndex = 0;
-      card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', `عرض تفاصيل ${item.title}`);
-      card.innerHTML = `
-        <img class="media-thumb" src="${item.thumbnail}" alt="صورة ${item.title}" />
-        <div class="media-info">
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-        </div>
-      `;
-      card.onclick = () => showDetails(item.id);
-      card.onkeypress = (e) => { if(e.key === 'Enter') showDetails(item.id); };
-      mediaList.appendChild(card);
-    });
-  }
-
-  // عرض تفاصيل مقال
-  function showDetails(id) {
-    const item = mediaItems.find(m => m.id === id);
-    if(!item) return;
-    addEditForm.style.display = 'none';
-    detailsSection.style.display = 'block';
-    mediaList.style.display = 'none';
-    slider.style.display = 'none';
-    formTitle.textContent = 'تعديل مقال';
-    editingItemId = id;
-
-    detailsSection.querySelector('.details-title').textContent = item.title;
-    detailsSection.querySelector('.details-category').textContent = `التصنيف: ${categories.find(c=>c.id === item.category)?.name || ''}`;
-    detailsSection.querySelector('.details-desc').textContent = item.description;
-    detailsSection.querySelector('.details-story').textContent = item.story;
-
-    // تحميل أول سيرفر في المشغل
-    if(item.embedLinks && item.embedLinks.length){
-      loadVideo(item.embedLinks[0].url);
-      renderServers(item.embedLinks, item.embedLinks[0].url);
-    } else {
-      loadVideo('');
-      serverList.innerHTML = '';
-    }
-
-    renderDownloadLinks(item.downloadLinks || []);
-  }
-
-  // تحميل فيديو
-  function loadVideo(url) {
-    videoPlayer.pause();
-    videoPlayer.src = url;
-    videoPlayer.load();
-  }
-
-  // عرض سيرفرات المشاهدة
-  function renderServers(servers, currentUrl) {
-    serverList.innerHTML = '';
-    servers.forEach(server => {
-      const btn = document.createElement('button');
-      btn.textContent = server.serverName;
-      btn.classList.toggle('active', server.url === currentUrl);
-      btn.onclick = () => {
-        loadVideo(server.url);
-        renderServers(servers, server.url);
-      };
-      serverList.appendChild(btn);
-    });
-  }
-
-  // عرض روابط التحميل
-  function renderDownloadLinks(links) {
-    downloadLinksContainer.innerHTML = '';
-    if(links.length === 0) return;
-    links.forEach((link, i) => {
-      const a = document.createElement('a');
-      a.href = link.trim();
-      a.textContent = `تحميل ${i+1}`;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      downloadLinksContainer.appendChild(a);
-    });
-  }
-
-  // العودة للصفحة الرئيسية
-  detailsSection.querySelector('.details-back').onclick = () => {
-    detailsSection.style.display = 'none';
-    mediaList.style.display = 'grid';
-    slider.style.display = 'flex';
-    addEditForm.style.display = 'none';
-    editingItemId = null;
-  };
-
-  // البحث
-  searchInput.addEventListener('input', filterAndRender);
-
-  // زر التعديل في صفحة التفاصيل
-  editBtn.onclick = () => {
-    if(!editingItemId) return;
-    const pass = prompt('دخل كلمة السر عشان تعدل:');
-    if(pass !== OWNER_PASSWORD){
-      alert('كلمة السر غلط يا خوي!');
-      return;
-    }
-    const item = mediaItems.find(m => m.id === editingItemId);
-    if(!item) return;
-
-    // عرض الفورم بالقيم
-    formTitle.textContent = 'تعديل مقال';
-    inputTitle.value = item.title;
-    inputDescription.value = item.description;
-    inputStory.value = item.story;
-    inputThumbnail.value = item.thumbnail;
-    inputCategory.value = item.category;
-    inputEmbed.value = item.embedLinks.length > 0 ? item.embedLinks[0].url : '';
-    inputDownloadLinks.value = item.downloadLinks.join(', ');
-
-    addEditForm.style.display = 'block';
-    detailsSection.style.display = 'none';
-  };
-
-  // زر الحذف
-  deleteBtn.onclick = () => {
-    if(!editingItemId) return;
-    const pass = prompt('دخل كلمة السر عشان تحذف:');
-    if(pass !== OWNER_PASSWORD){
-      alert('كلمة السر غلط يا طويل العمر!');
-      return;
-    }
-    if(confirm('متأكد تبغى تحذف المقال؟')) {
-      mediaItems = mediaItems.filter(m => m.id !== editingItemId);
-      saveData();
-      editingItemId = null;
-      detailsSection.style.display = 'none';
-      mediaList.style.display = 'grid';
-      slider.style.display = 'flex';
-      filterAndRender();
-    }
-  };
-
-  // فورم الإضافة / التعديل
-  addEditForm.onsubmit = e => {
-    e.preventDefault();
-    const title = inputTitle.value.trim();
-    const desc = inputDescription.value.trim();
-    const story = inputStory.value.trim();
-    const thumb = inputThumbnail.value.trim();
-    const embedUrl = inputEmbed.value.trim();
-    const category = inputCategory.value;
-    const downloadRaw = inputDownloadLinks.value.trim();
-
-    if(!title || !desc || !story || !thumb || !embedUrl || !category){
-      alert('كمل تعبئة الحقول يا حبيب!');
-      return;
-    }
-
-    const downloadLinksArr = downloadRaw ? downloadRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-    if(editingItemId) {
-      // تعديل
-      const idx = mediaItems.findIndex(m => m.id === editingItemId);
-      if(idx >= 0) {
-        mediaItems[idx] = {
-          ...mediaItems[idx],
-          title,
-          description: desc,
-          story,
-          thumbnail: thumb,
-          embedLinks: [{serverName: "السيرفر الرئيسي", url: embedUrl}],
-          category,
-          downloadLinks: downloadLinksArr
-        };
-      }
-    } else {
-      // إضافة جديد
-      mediaItems.push({
-        id: generateId(),
-        title,
-        description: desc,
-        story,
-        thumbnail: thumb,
-        embedLinks: [{serverName: "السيرفر الرئيسي", url: embedUrl}],
-        category,
-        downloadLinks: downloadLinksArr
+      // البحث
+      searchInput.addEventListener("input", () => {
+        renderMedia();
       });
-    }
-    saveData();
-    addEditForm.style.display = 'none';
-    editingItemId = null;
-    filterAndRender();
-    mediaList.style.display = 'grid';
-    slider.style.display = 'flex';
-  };
 
-  // زر إضافة مقال جديد (تضيف فوق السلايدر)
-  const btnAddNew = document.createElement('button');
-  btnAddNew.className = 'btn-add';
-  btnAddNew.textContent = 'إضافة مقال جديد';
-  btnAddNew.onclick = () => {
-    const pass = prompt('دخل كلمة السر عشان تضيف:');
-    if(pass !== OWNER_PASSWORD){
-      alert('كلمة السر غلط!');
-      return;
-    }
-    editingItemId = null;
-    formTitle.textContent = 'إضافة مقال جديد';
-    inputTitle.value = '';
-    inputDescription.value = '';
-    inputStory.value = '';
-    inputThumbnail.value = '';
-    inputEmbed.value = '';
-    inputCategory.value = '';
-    inputDownloadLinks.value = '';
-    addEditForm.style.display = 'block';
-    detailsSection.style.display = 'none';
-    mediaList.style.display = 'none';
-    slider.style.display = 'none';
-    inputTitle.focus();
-  };
-  document.body.insertBefore(btnAddNew, document.body.children[1]);
+      // زر رجوع التفاصيل
+      detailsBackBtn.addEventListener("click", () => {
+        closeDetails();
+      });
 
-  // التهيئة النهائية
-  init();
+      // زر التشغيل / الإيقاف الفيديو
+      btnPlayPause.addEventListener("click", () => {
+        if (videoPlayer.paused) {
+          videoPlayer.play();
+          btnPlayPause.textContent = "⏸️";
+        } else {
+          videoPlayer.pause();
+          btnPlayPause.textContent = "▶️";
+        }
+      });
 
-})();
-</script>
+      // تحديث زر التشغيل/إيقاف عند انتهاء الفيديو
+      videoPlayer.addEventListener("ended", () => {
+        btnPlayPause.textContent = "▶️";
+      });
 
+      // أزرار الإضافة والتعديل والحذف
+      btnAddNew.addEventListener("click", () => {
+        openAddEditForm();
+      });
+      btnEdit.addEventListener("click", () => {
+        if (!currentItem) return;
+        openAddEditForm(currentItem);
+      });
+      btnDelete.addEventListener("click", () => {
+        if (!currentItem) return;
+        if (confirm(`هل تريد حذف "${currentItem.title}"؟`)) {
+          mediaItems = mediaItems.filter(i => i.id !== currentItem.id);
+          renderMedia();
+          alert("تم حذف المقالة.");
+        }
+      });
+      btnCloseForm.addEventListener("click", () => {
+        closeAddEditForm();
+      });
+
+      // فتح نموذج إضافة / تعديل
+      function openAddEditForm(item = null) {
+        addEditFormSection.hidden = false;
+        detailsSection.hidden = true;
+        mediaList.hidden = true;
+        sliderContainer.hidden = true;
+        categoryNav.hidden = true;
+        searchInput.hidden = true;
+        btnAddNew.hidden = true;
+        btnEdit.hidden = true;
+        btnDelete.hidden = true;
+        btnCloseForm.hidden = false;
+
+        // تعبئة النموذج إذا تعديل
+        if (item) {
+          mediaTypeInput.value = item.type;
+          mediaTitleInput.value = item.title;
+          mediaDescInput.value = item.description;
+          mediaStoryInput.value = item.story;
+          mediaPosterInput.value = item.poster;
+        } else {
+          mediaForm.reset();
+        }
+      }
+
+      // إغلاق نموذج إضافة / تعديل
+      function closeAddEditForm() {
+        addEditFormSection.hidden = true;
+        mediaList.hidden = false;
+        sliderContainer.hidden = false;
+        categoryNav.hidden = false;
+        searchInput.hidden = false;
+        btnAddNew.hidden = false;
+        updateActionButtons();
+        btnCloseForm.hidden = true;
+      }
+
+      // حفظ أو تعديل المقالة
+      mediaForm.addEventListener("submit", e => {
+        e.preventDefault();
+
+        const type = mediaTypeInput.value;
+        const title = mediaTitleInput.value.trim();
+        const description = mediaDescInput.value.trim();
+        const story = mediaStoryInput.value.trim();
+        const poster = mediaPosterInput.value.trim();
+        const videoFile = mediaVideoInput.files[0];
+
+        if (!type || !title || !description || !story || !poster) {
+          alert("لازم تعبي كل الحقول المطلوبة.");
+          return;
+        }
+
+        // لو في رفع فيديو: نحول الملف لفيديو URL
+        if (videoFile) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const videoURL = event.target.result;
+            saveMedia({type, title, description, story, poster, videoSrc: videoURL});
+          };
+          reader.readAsDataURL(videoFile);
+        } else {
+          saveMedia({type, title, description, story, poster, videoSrc: ""});
+        }
+      });
+
+      // حفظ البيانات في المصفوفة (تعديل أو إضافة جديد)
+      function saveMedia(data) {
+        if (currentItem) {
+          // تعديل
+          currentItem.type = data.type;
+          currentItem.title = data.title;
+          currentItem.description = data.description;
+          currentItem.story = data.story;
+          currentItem.poster = data.poster;
+          currentItem.videoSrc = data.videoSrc;
+          alert("تم تعديل المقالة.");
+        } else {
+          // إضافة
+          const newId = mediaItems.length ? Math.max(...mediaItems.map(i => i.id)) + 1 : 1;
+          mediaItems.push({
+            id: newId,
+            type: data.type,
+            title: data.title,
+            description: data.description,
+            story: data.story,
+            poster: data.poster,
+            videoSrc: data.videoSrc,
+            downloadLinks: []
+          });
+          alert("تم إضافة المقالة الجديدة.");
+        }
+        renderMedia();
+        closeAddEditForm();
+      }
+
+      // بدء العرض
+      renderMedia();
+
+    })();
+  </script>
 </body>
 </html>
