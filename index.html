@@ -1,17 +1,1 @@
----
-layout: default
----
-<h2>أحدث الإضافات</h2>
-<ul class="latest-list">
-  {% for cat in site.collections %}
-    {% assign entries = site[cat.label] | sort: 'date' | reverse | slice: 0,3 %}
-    <li>
-      <h3>{{ cat.label | capitalize }}</h3>
-      <ul>
-        {% for post in entries %}
-          <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </li>
-  {% endfor %}
-</ul>
+
