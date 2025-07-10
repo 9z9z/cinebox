@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>فاصل أفلام - الصفحة الرئيسية</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>📽️ فاصل أفلام</h1>
+  </header>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="#addForm">أضف فلم</a>
+  </nav>
+  <main class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ابحث عن فلم..." />
+      <button onclick="searchMovies()">بحث</button>
+    </div>
+    <div id="movieList" class="movie-list"></div>
+
+    <section id="addForm" class="add-movie-form">
+      <h2>أضف فلم جديد</h2>
+      <input type="text" id="movieTitle" placeholder="عنوان الفلم" />
+      <textarea id="movieDesc" rows="4" placeholder="قصة الفلم"></textarea>
+      <input type="text" id="movieEmbed" placeholder="رابط إيمبد (عرض)" />
+      <input type="text" id="movieDownload" placeholder="رابط تحميل (اختياري)" />
+      <button onclick="addMovie()">أضف الفلم</button>
+    </section>
+  </main>
+
+<script>
+  // جلب الأفلام من localStorage أو إنشاء مصفوفة فارغة
+  let movies = JSON.parse(localStorage.getItem('movies')) || [];
+
+  // دالة عرض الأفلام في الصفحة
+  function renderMovies(list) {
+    const container = document.getElementById('movieList');
+    container.innerHTML = '';
+    if(list.length === 0) {
+      container.innerHTML = '<p>ما فيه أفلام هنا.</p>';
+      return;
+    }
+    list.forEach((movie, idx) => {
+      const card = document.createElement('div');
+      card.className = 'movie-card';
+      card.innerHTML = `
+        <h3>${movie.title}</h3>
+        <p>${movie.description.substring(0, 70)}...</p>
+      `;
+      card.onclick = () => {
+        // نروح لصفحة تفاصيل الفلم مع تمرير المعرف
+        window.location.href = `movie.html?id=${idx}`;
+      };
+      container.appendChild(card);
+    });
+  }
+
+  // دالة إضافة فلم جديد
+  function addMovie() {
+    const title = document.getElementById('movieTitle').value.trim();
+    const desc = document.getElementById('movieDesc').value.trim();
+    const embed = document.getElementById('movieEmbed').value.trim();
+    const download = document.getElementById('movieDownload').value.trim();
+
+    if(!title || !desc || !embed) {
+      alert('عبي كل الحقول المطلوبة.');
+      return;
+    }
+
+    movies.push({title, description: desc, embed, download});
+    localStorage.setItem('movies', JSON.stringify(movies));
+    alert('تم إضافة الفلم يا ذيب 🔥');
+    
+    // إعادة عرض القائمة
+    renderMovies(movies);
+
+    // تفريغ الحقول
+    document.getElementById('movieTitle').value = '';
+    document.getElementById('movieDesc').value = '';
+    document.getElementById('movieEmbed').value = '';
+    document.getElementById('movieDownload').value = '';
+  }
+
+  // دالة بحث
+  function searchMovies() {
+    const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+    if(!keyword) {
+      renderMovies(movies);
+      return;
+    }
+    const filtered = movies.filter(m => m.title.toLowerCase().includes(keyword));
+    renderMovies(filtered);
+  }
+
+  // عرض الأفلام عند تحميل الصفحة
+  renderMovies(movies);
+</script>
+</body>
+</html>
